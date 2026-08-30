@@ -37,5 +37,49 @@ EFI_STATUS load_kernel(EFI_HANDLE IH,EFI_SYSTEM_TABLE *ST) {
   if (EFI_ERROR(status)) {
     return status;
   }
-  KernelFile->GetInfo();  
+  UINTN InfoSize = 0;
+  EFI_FILE_INFO *FileInfo = NULL;
+  status = KernelFile->GetInfo(
+    KernelFile,
+    &gEfiFileInfoGuid,
+    &InfoSize,
+    NULL
+  );
+  if (status != EFI_BUFFER_TOO_SMALL) {
+    return status;
+  }
+  status = ST->BootServices->AllocatePool(
+    EfiLoaderData,
+    InfoSize,
+    (VOID **)&FileInfo
+  );
+  if (EFI_ERROR(status)) {
+    return status;
+  }
+  status = KernelFile->GetInfo(
+    KernelFile,
+    &gEfiFileInfoGuid,
+    &InfoSize,
+    FileInfo
+  );
+
+  if (EFI_ERROR(status)) {
+    return status;
+  }
+  UINT64 KernelSize=FileInfo->FileSize;
+  status = ST->BootServices->FreePool(FileInfo);
+
+  if (EFI_ERROR(status)) {
+    return status;
+  }
+  VOID *KernelBuffer = NULL;
+  status = ST->BootServices->AllocatePool(
+    EfiLoaderData,
+    KernelSize,
+    &KernelBuffer
+  );
+  if (EFI_ERROR(status)) {
+    return status;
+  }
+  return EFI_SUCCESS;
 }
