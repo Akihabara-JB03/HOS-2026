@@ -1,6 +1,6 @@
 #![no_std]
 #![no_main]
-use panic;
+mod panic;
 #[unsafe(no_mangle)]
 pub extern "C" fn kernel_main() {
   loop {}
