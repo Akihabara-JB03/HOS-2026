@@ -1,1 +1,15 @@
-
+.title {
+  background-color: #080808;
+  background-image:
+    linear-gradient(#ffffff08 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.title h1 {
+  font-size:40px;
+  font-family: "Consolas", "Courier New", monospace;
+}
+.title p {
+  font-size:20px;
+  font-family:serif;
+}
