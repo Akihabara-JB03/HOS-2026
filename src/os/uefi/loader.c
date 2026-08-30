@@ -81,5 +81,17 @@ EFI_STATUS load_kernel(EFI_HANDLE IH,EFI_SYSTEM_TABLE *ST) {
   if (EFI_ERROR(status)) {
     return status;
   }
+  UINTN ReadSize = KernelSize;
+  status = KernelFile->Read(
+    KernelFile,
+    &ReadSize,
+    KernelBuffer
+  );
+  if (EFI_ERROR(status)) {
+    return status;
+  }
+  if (ReadSize != KernelSize) {
+    return EFI_LOAD_ERROR;
+  }
   return EFI_SUCCESS;
 }
