@@ -37,4 +37,5 @@ EFI_STATUS load_kernel(EFI_HANDLE IH,EFI_SYSTEM_TABLE *ST) {
   if (EFI_ERROR(status)) {
     return status;
   }
+  KernelFile->GetInfo();  
 }
